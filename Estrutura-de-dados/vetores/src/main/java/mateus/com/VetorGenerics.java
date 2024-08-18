@@ -1,18 +1,23 @@
 package mateus.com;
 
-import org.w3c.dom.ranges.RangeException;
+import java.lang.reflect.Array;
 
-public class Vetor {
-    private String[] elements;
+public class VetorGenerics<T> {
+    private T[] elements;
 
     private int size;
 
-    public Vetor(int length) {
-        this.elements = new String[length];
+    public VetorGenerics(int length, Class<T> typeClass) {
+        this.elements = (T[]) Array.newInstance(typeClass, length);
         this.size = 0;
     }
 
-    public boolean add(String element)  {
+    public VetorGenerics(int lenght){
+        this.elements = (T[]) new Object[lenght];
+        this.size = 0;
+    }
+
+    public boolean add(T element)  {
         plusVetor();
 
         if (isFull()) {
@@ -27,7 +32,7 @@ public class Vetor {
         return false;
     }
 
-    public boolean add(String element, int index)  {
+    public boolean add(T element, int index)  {
         plusVetor();
         if (index >= elements.length || index < 0) {
             throw new IllegalArgumentException("This index not exists in vetor");
@@ -64,7 +69,7 @@ public class Vetor {
         string.append("[");
 
         for (int i = 0; i < this.size; i++) {
-            string.append(elements[i]);
+            string.append(elements[i].toString());
 
             if (i < this.size - 1) {
                 string.append(", ");
@@ -83,7 +88,7 @@ public class Vetor {
         throw new IllegalArgumentException("This index not exists in vetor");
     }
 
-    public int find(String element) {
+    public int find(T element) {
         for (int i = 0; i < size; i++) {
             if (elements[i].equals(element)) {
                 return i;
@@ -98,7 +103,7 @@ public class Vetor {
 
     private void plusVetor(){
         if (this.size == this.elements.length){
-            String[] newElements = new String[elements.length * 2];
+            T[] newElements = (T[]) new Object[elements.length * 2];
             for (int i = 0; i < this.elements.length ; i++) {
                 newElements[i] = this.elements[i];
             }
@@ -118,8 +123,7 @@ public class Vetor {
         size -= 1;
     }
 
-    public void remove (String element){
-        ;
+    public void remove (T element){
         if (!(index >= 0 && index < size) || index > size) {
             throw new IllegalArgumentException("Invalid Index!");
         }
